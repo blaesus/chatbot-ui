@@ -38,6 +38,28 @@ interface Props {
   stopConversationRef: MutableRefObject<boolean>;
 }
 
+function AuthInput() {
+  const [key, setKey] = useState(localStorage.getItem("authKey") || "");
+  return (
+      <div>
+        <label>
+          Auth key:
+          <input
+              type="password"
+              value={key}
+              onChange={e => {
+                setKey(e.target.value)
+                localStorage.setItem("authKey", e.target.value);
+              }}
+              style={{
+                color: "black"
+              }}
+          />
+        </label>
+      </div>
+  )
+}
+
 export const Chat = memo(({ stopConversationRef }: Props) => {
   const { t } = useTranslation('chat');
 
@@ -99,6 +121,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
           key: apiKey,
           prompt: updatedConversation.prompt,
           temperature: updatedConversation.temperature,
+          authKey: localStorage.getItem("authKey"),
         };
         const endpoint = getEndpoint(plugin);
         let body;
@@ -433,6 +456,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
                           })
                         }
                       />
+                      <AuthInput />
                     </div>
                   )}
                 </div>

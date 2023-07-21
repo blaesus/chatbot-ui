@@ -19,3 +19,6 @@ export const OPENAI_ORGANIZATION =
 
 export const AZURE_DEPLOYMENT_ID =
   process.env.AZURE_DEPLOYMENT_ID || '';
+
+export const CHATBOT_AUTH_KEY =
+    process.env.CHATBOT_AUTH_KEY || '';

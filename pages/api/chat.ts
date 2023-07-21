@@ -1,5 +1,6 @@
 import { DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE } from '@/utils/app/const';
 import { OpenAIError, OpenAIStream } from '@/utils/server';
+import { CHATBOT_AUTH_KEY } from '@/utils/app/const';
 
 import { ChatBody, Message } from '@/types/chat';
 
@@ -15,7 +16,12 @@ export const config = {
 
 const handler = async (req: Request): Promise<Response> => {
   try {
-    const { model, messages, key, prompt, temperature } = (await req.json()) as ChatBody;
+    const { model, messages, key, prompt, temperature, authKey } = (await req.json()) as ChatBody;
+
+    console.info(CHATBOT_AUTH_KEY)
+    if (CHATBOT_AUTH_KEY && authKey !== CHATBOT_AUTH_KEY) {
+      return new Response('Error', { status: 401, statusText: "key not valid" });
+    }
 
     await init((imports) => WebAssembly.instantiate(wasm, imports));
     const encoding = new Tiktoken(
