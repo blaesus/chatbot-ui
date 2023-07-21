@@ -22,3 +22,6 @@ export const AZURE_DEPLOYMENT_ID =
 
 export const CHATBOT_AUTH_KEY =
     process.env.CHATBOT_AUTH_KEY || '';
+
+export const CHATBOT_ALLOWED_MODELS =
+    process.env.CHATBOT_ALLOWED_MODELS || 'gpt-3.5-turbo';

@@ -1,4 +1,4 @@
-import { DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE } from '@/utils/app/const';
+import { CHATBOT_ALLOWED_MODELS, DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE } from "@/utils/app/const";
 import { OpenAIError, OpenAIStream } from '@/utils/server';
 import { CHATBOT_AUTH_KEY } from '@/utils/app/const';
 
@@ -21,6 +21,10 @@ const handler = async (req: Request): Promise<Response> => {
     console.info(CHATBOT_AUTH_KEY)
     if (CHATBOT_AUTH_KEY && authKey !== CHATBOT_AUTH_KEY) {
       return new Response('Error', { status: 401, statusText: "key not valid" });
+    }
+
+    if (!CHATBOT_ALLOWED_MODELS.includes(model.id)) {
+      return new Response('Error', { status: 401, statusText: "model not available" });
     }
 
     await init((imports) => WebAssembly.instantiate(wasm, imports));
